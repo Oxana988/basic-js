@@ -16,7 +16,7 @@ const { NotImplementedError } = require('../extensions/index.js');
 function transform(arr) {
   let from = 0;
   if(!Array.isArray(arr)) {
-    return `'arr' parameter must be an instance of the Array!`}
+    throw new Error("'arr' parameter must be an instance of the Array!")}
     arr.forEach((elem) => {
       let k = arr.indexOf('--disard-next', from);
       if (k >= 0) {
