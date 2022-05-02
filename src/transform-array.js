@@ -14,39 +14,33 @@ const { NotImplementedError } = require('../extensions/index.js');
  * 
  */
 function transform(arr) {
-  let from = 0;
-  if(!Array.isArray(arr)) {
-    throw new Error("'arr' parameter must be an instance of the Array!")}
-    arr.forEach((elem) => {
-      let k = arr.indexOf('--disard-next', from);
-      if (k >= 0) {
-        arr.splice(k, 2)
-        from = k;
+  if(!Array.isArray(arr)) { 
+    throw new Error("'arr' parameter must be an instance of the Array!")};
+    let transformArr = [...arr];
+  if ((arr[0] === '--discard-prev') || (arr[0] === '--double-prev')) {
+    transformArr.splice(0, 1)};
+  if ((arr[arr.length - 1] === '--disard-next') || (arr[arr.length - 1] === '--double-next')) {
+    transformArr.splice((arr.length - 1), 1);
+  }
+    arr.forEach ((el) => {
+      if (el === '--disard-next') {
+        transformArr.splice(el, 2)
       }
-      from = 0;
-       
-      let l = arr.indexOf('--discard-prev', from);
-      if (l >= 0) {
-        arr.splice(l - 1, 2)
-        from = l;
+      if (el === '--discard-prev') {
+        transformArr.splice((el - 1), 2)
       }
-      from = 0;
-
-      let n = arr.indexOf('--double-next', from);
-      if (n >= 0) {
-        arr.splice(n, 1, arr[n+1])
-        from = n;
+      if (el === '--double-next') {
+        transformArr.splice(el, 1, arr[el + 1])
       }
-      from = 0;
-      
-      let m = arr.indexOf('--double-prev', from);
-      if (m >= 0) {
-        arr.splice(m, 1, arr[m-1])
-        from = m;
+      if (el === '--double-prev') {
+        transformArr.splice(el, 1, arr[el - 1])
       }
-      from = 0;
+      if (el === [undefined]) {
+        transformArr.splice(el, 1)
+      }
     })
-    return arr;
+ 
+    return transformArr;
   }
   //throw new NotImplementedError('Not implemented');
   // remove line with error and write your code here
