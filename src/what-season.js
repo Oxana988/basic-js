@@ -12,9 +12,15 @@ const { NotImplementedError } = require('../extensions/index.js');
  * 
  */
 function getSeason(data) {
+  if (!data) return 'Unable to determine the time of year!';
+  try {
+    data.toUTCString();
+  } catch (err) {
+    throw new Error('Invalid date!');
+  }
  // throw new NotImplementedError('Not implemented');
  // if (newdate.length <= 0) return 'Unable to determine the time of year!';
- let month = data.getMonth();
+  let month = data.getMonth();
   if (month === 11 || month === 0 || month === 1) return 'winter';
   if (month === 2 || month === 3 || month === 4) return 'spring';
   if (month === 5 || month === 6 || month === 7) return 'summer';
