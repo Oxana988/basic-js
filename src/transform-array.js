@@ -16,30 +16,34 @@ const { NotImplementedError } = require('../extensions/index.js');
 function transform(arr) {
   if(!Array.isArray(arr)) { 
     throw new Error("'arr' parameter must be an instance of the Array!")};
-    let newArr = [...arr];
     let resultArr = [];
-  /*if ((arr[0] === '--discard-prev') || (arr[0] === '--double-prev')) {
-    transformArr.splice(0, 1)};
-  if ((arr[arr.length - 1] === '--disard-next') || (arr[arr.length - 1] === '--double-next')) {
-    transformArr.splice((arr.length - 1), 1);
-  }*/
-      newArr.forEach ((el) => {
-      if (el === '--disard-next') {
-        resultArr.push(undefined)
-      }
-      if (el === '--discard-prev') {
-        resultArr.pop();
-      }
-      if (el === '--double-next') {
-        resultArr.push(newArr[el + 1])
-      }
-      if (el === '--double-prev') {
-        resultArr.push(resultArr[resultArr.length - 1])
-      }
-      else { resultArr.push(el)}
-      })
  
-    return resultArr.filter(elem => 
+      for (let i = 0; i < arr.length; i++) {
+        resultArr.push(arr[i]);
+        if (arr[i] === '--discard-next') {
+          resultArr.pop();
+          if (i < arr.length - 1) {
+            i += 2;
+          }
+        }
+        if (arr[i] === '--discard-prev') {
+          resultArr.pop();
+          if (i > 0) {
+            resultArr.pop();
+          }
+        }
+        if (arr[i] === '--double-next') {
+          resultArr.pop();
+          resultArr.push(arr[i + 1])
+        }
+        if (arr[i] === '--double-prev') {
+          resultArr.pop();
+          resultArr.push(resultArr[resultArr.length - 1])
+        }
+      }
+
+ 
+      return resultArr.filter(elem => 
       elem !== undefined);
   }
   //throw new NotImplementedError('Not implemented');
